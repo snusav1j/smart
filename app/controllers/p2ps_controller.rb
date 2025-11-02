@@ -1,5 +1,6 @@
 class P2psController < ApplicationController
   before_action :set_p2p, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   def index
     @p2ps = current_user ? P2p.by_user(current_user.id).buy_orders.reverse : nil
