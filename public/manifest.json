@@ -3,7 +3,7 @@
   "short_name": "p2p_smart",
   "icons": [
     {
-      "src": ".png",
+      "src": "logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
