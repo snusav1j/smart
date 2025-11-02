@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     get    'unlock/verify', to: 'devise/unlocks#show',     as: :unlock_verify
   end
 
-  root "p2ps#index"
+  root "home#index"
 
   resources :home do
     collection do
