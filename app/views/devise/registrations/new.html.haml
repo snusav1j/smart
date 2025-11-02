@@ -1,0 +1,19 @@
+.content-block
+  .content-header
+    %h1 Регистрация
+  .content-body
+    = form_with model: resource, as: resource_name, url: registration_path(resource_name), local: true, html: { class: 'form-box' } do |f|
+      .form-group
+        = f.label :email, 'Email'
+        = f.email_field :email, class: 'form-input', required: true
+      .form-group
+        = f.label :password, 'Пароль'
+        = f.password_field :password, class: 'form-input', required: true
+      .form-group
+        = f.label :password_confirmation, 'Подтверждение пароля'
+        = f.password_field :password_confirmation, class: 'form-input', required: true
+      .form-actions
+        .pull-left
+          = link_to 'Войти', login_path, class: 'btn'
+        .pull-left
+          = f.submit 'Зарегистрироваться', class: 'btn btn-primary'

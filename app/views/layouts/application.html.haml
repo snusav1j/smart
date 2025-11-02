@@ -9,9 +9,10 @@
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
+    %link{ rel: "manifest", href: "/manifest.json" }
+    %link{ rel: "icon", href: "/icons/logo.png", type: "image/png" }
     %link{:href => "https://fonts.googleapis.com", :rel => "preconnect"}
     %link{:crossorigin => "", :href => "https://fonts.gstatic.com", :rel => "preconnect"}
-
     %link{ href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined", rel: "stylesheet" }
 
     %link{ href: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap", rel: "stylesheet"}
@@ -21,8 +22,7 @@
     %title= "SMART"
   %body
     .header
-      - if current_user
-        = render partial: '/layouts/header'
+      = render partial: '/layouts/header'
     .content
       = yield
     .footer

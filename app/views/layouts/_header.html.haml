@@ -6,15 +6,15 @@
   .header-nav.space-between.align-center.box
     - if current_user
       .navigation
-        = link_to root_path do
-          .btn
-            = g_icon('account_circle')
+        -# = link_to root_path do
+        -#   .btn
+        -#     = g_icon('account_circle')
         = link_to root_path do
           .btn
             = g_icon('account_balance')
-        = link_to root_path do
-          .btn
-            = g_icon('receipt')
+        -# = link_to root_path do
+        -#   .btn
+        -#     = g_icon('receipt')
 
       .header-user
         .user-controls
@@ -22,3 +22,12 @@
             = g_icon('account_circle')
           .btn
             = g_icon('settings')
+          .btn
+            = link_to logout_path, method: :delete do
+              = g_icon('logout')
+    - else
+      .navigation
+      .user-controls
+        .btn
+          = link_to login_path do
+            = g_icon('login')
