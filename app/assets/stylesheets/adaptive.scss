@@ -1,0 +1,10 @@
+@media screen and (max-width: 767px){
+  .form-box{
+    min-width: unset !important;
+    max-width: unset !important;
+    width: 100%;
+  }
+  .form-block-with-info{
+    flex-direction: column;
+  }
+}

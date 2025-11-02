@@ -7,4 +7,14 @@
  * depending on specificity.
  *
  * Consider organizing styles into separate files for maintainability.
+
+ *= require font-awesome
+ *= require general
+ *= require adaptive
+ *= require home
+ *= require forms
+ *= require custom_tooltip
+ *= require p2ps
+ *= require multiple_select
+ *= require custom_toastr
  */

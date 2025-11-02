@@ -1,0 +1,24 @@
+%header.app-header
+  .logo-block.btn.box
+    = link_to p2ps_path do
+      = g_icon('p2p')
+  
+  .header-nav.space-between.align-center.box
+    - if current_user
+      .navigation
+        = link_to root_path do
+          .btn
+            = g_icon('account_circle')
+        = link_to root_path do
+          .btn
+            = g_icon('account_balance')
+        = link_to root_path do
+          .btn
+            = g_icon('receipt')
+
+      .header-user
+        .user-controls
+          .btn
+            = g_icon('account_circle')
+          .btn
+            = g_icon('settings')

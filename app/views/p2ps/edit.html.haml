@@ -1,0 +1,48 @@
+.content-block
+  .content-header
+    %h1 Редактировать ордер
+  .content-body
+    
+    = form_with model: @p2p, local: true, html: { class: 'form-box' } do |f|
+      = f.hidden_field :id, class: 'form-input', required: false
+      .form-group
+        = f.label :p2p_type, 'Тип сделки'
+        = f.select :p2p_type, options_for_select([['Покупка', 0], ['Продажа', 1]], @p2p.sell? ? 1 : 0), {}, class: 'form-input', required: true
+      .form-group.p2p-form-buy
+        = f.label :order_id, 'Ордер ID'
+        = f.number_field :order_id, class: 'form-input', required: false
+      - if @p2p.sell?
+        .form-group
+          = f.label :sell_order_id, 'Продать (покупку)'
+          = f.select :sell_order_id, options_for_select(P2p.buy_orders.reverse.map { |c| ["покупка ##{c.order_id}", c.id] }, @p2p.sell_order_id), {}, class: 'form-input', required: true
+      .form-group
+        = f.label :rub_per_usd, 'Курс (₽ / $)'
+        = f.number_field :rub_per_usd, step: 0.01, class: 'form-input', required: true
+      .form-group
+        = f.label :order_sum, 'Сумма заказа (₽)'
+        = f.number_field :order_sum, step: 0.01, class: 'form-input', required: true
+      - if @p2p.sell?
+        .form-group
+          = f.label :extra_sell_summ, 'Лишняя сумма (₽)'
+          = f.number_field :extra_sell_summ, step: 0.01, class: 'form-input', required: false
+      - if @p2p.buy?
+        .form-group
+          = f.label :comission_rub, 'Комиссия банка (₽)'
+          = f.number_field :comission_rub, step: 0.01, class: 'form-input', required: false
+      .form-group
+        = f.label :usdt_count, 'Кол-во USDT'
+        = f.number_field :usdt_count, step: 0.01, class: 'form-input', required: true
+      .form-group
+        = f.label :order_date, 'Дата'
+        = f.text_field :order_date, class: 'form-input', value: @p2p.order_date
+      .form-group
+        = f.label :bank_id, 'Банк'
+        = f.select :bank_id, options_for_select(Bank::BANKS.map { |c| [tgm("bank_#{c}"), c] }, @p2p.bank_id), {}, prompt: 'Выберите банк', class: 'form-input', required: true
+      .form-group.inline
+        = f.label :tax_paid, 'Налог оплачен'
+        = f.checkbox :tax_paid
+      .form-actions
+        = link_to 'Отмена', p2ps_path, class: 'btn'
+        = f.submit 'Обновить', class: 'btn'
+      
+

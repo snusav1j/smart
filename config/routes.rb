@@ -18,12 +18,12 @@ Rails.application.routes.draw do
     post   'forgot',   to: 'devise/passwords#create'
     get    'reset',    to: 'devise/passwords#edit',        as: :edit_password
     put    'reset',    to: 'devise/passwords#update'
-  
+
     # Подтверждение почты
     get    'confirm',  to: 'devise/confirmations#new',     as: :new_confirmation
     post   'confirm',  to: 'devise/confirmations#create'
     get    'confirm/verify', to: 'devise/confirmations#show', as: :confirm_verify
-  
+
     # Разблокировка аккаунта
     get    'unlock',   to: 'devise/unlocks#new',           as: :new_unlock
     post   'unlock',   to: 'devise/unlocks#create'
@@ -32,10 +32,21 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-
   resources :home do
     collection do
-
     end
-  end  
+  end
+
+  resources :p2ps do
+    collection do
+      post :sell_order
+      get :remove_check
+      get :edit
+    end
+    
+    member do
+      get :sell
+      
+    end
+  end
 end

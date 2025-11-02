@@ -1,0 +1,103 @@
+.p2p-card:not(:last-child){
+  margin-bottom: 15px;
+}
+.p2p-card {
+  background: var(--tertiary-color);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.hide-show-card {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.hide-show-card.rotated {
+  transform: rotate(-180deg);
+}
+
+// .p2p-card:hover {
+//   .p2p-info {
+//     background: #20242b;
+//     border-color: #3a3d45;
+//   }
+// }
+
+.p2p-header {
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+.p2p-header h2 {
+  font-size: 18px;
+  color: #fff;
+}
+
+.p2p-header .date {
+  font-size: 13px;
+  color: #8b949e;
+}
+
+.p2p-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px 16px;
+  padding: 15px;
+  align-items: center;
+  background: #232428;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 8px 8px;
+}
+
+.p2p-item label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.p2p-item span {
+  font-size: 15px;
+  color: #e4e6eb;
+  font-weight: 500;
+}
+
+.p2p-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-edit {
+  background: #2b3038;
+  color: #b6bec9;
+}
+
+.btn-edit:hover {
+  background: #353a42;
+  color: #fff;
+}
+
+.btn-delete {
+  background: var(--danger);
+  color: #ff6b6b;
+}
+
+.btn-delete:hover {
+  background: var(--hover-danger);
+}
+
+.no-p2ps {
+  text-align: center;
+  padding: 40px 0;
+  color: #9ba1aa;
+  border: 2px dashed #3a3d45;
+  border-radius: 6px;
+  background: #2a2a2a;
+}
+

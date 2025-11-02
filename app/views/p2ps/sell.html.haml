@@ -1,0 +1,42 @@
+.content-block
+  .content-header
+    %h1.flex.align-center
+      Продать ордер
+      - if @p2p
+        %span.text-muted.small-box= @p2p.order_id
+  .content-body
+    .form-block-with-info
+      = form_with model: @p2p_sell, local: true, url: sell_order_p2ps_path, html: { class: 'form-box' } do |f|
+        .form-group
+          = f.label :order_id, 'Ордер ID'
+          = f.number_field :order_id, class: 'form-input', required: true
+        .form-group
+          = f.label :sell_order_id, 'Продать (покупку)'
+          = f.select :sell_order_id, options_for_select(P2p.buy_orders.reverse.map { |c| ["покупка ##{c.order_id}", c.id] }), {}, class: 'form-input', required: true
+        .form-group
+          = f.label :rub_per_usd, 'Курс (₽ / $)'
+          = f.number_field :rub_per_usd, step: 0.01, class: 'form-input', required: true
+        .form-group
+          = f.label :order_sum, 'Сумма заказа (₽)'
+          = f.number_field :order_sum, step: 0.01, class: 'form-input', required: true
+        .form-group
+          = f.label :usdt_count, 'Кол-во USDT'
+          = f.number_field :usdt_count, step: 0.01, class: 'form-input', required: true
+        .form-group
+          = f.label :extra_sell_summ, 'Лишняя сумма (₽)'
+          = f.number_field :extra_sell_summ, step: 0.01, class: 'form-input', required: false
+
+        .form-group
+          = f.label :order_date, 'Дата'
+          = f.text_field :order_date, class: 'form-input'
+        .form-group
+          = f.label :bank_id, 'Банк'
+          = f.select :bank_id, options_for_select(Bank::BANKS.map { |c| [tgm("bank_#{c}"), c] }), {}, prompt: 'Выберите банк', class: 'form-input', required: true
+        .form-actions
+          = link_to 'Отмена', p2ps_path, class: 'btn'
+          = f.submit 'Сохранить', class: 'btn'
+      .form-info-block
+        - p2ps = P2p.get_sell_orders_by(@p2p)
+        - if p2ps
+          - p2ps.each do |p2p|
+            = render partial: 'p2p_card', locals: { p2p: p2p, show_card_body: true }

@@ -28,4 +28,7 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  bank_1: Т-Банк
+  bank_2: Сбербанк
+  bank_3: АлфаБанк
+  bank_4: ОзонБанк

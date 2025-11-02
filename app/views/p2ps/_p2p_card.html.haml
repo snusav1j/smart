@@ -1,0 +1,61 @@
+.p2p-card
+  .p2p-header
+    %span
+      %span.text-muted.small-box{ style: "font-weight: 700; margin-right: 10px;"  }= "##{p2p.order_id}"
+      
+      - if p2p.buy?
+        - if p2p.calculate_profit != 0
+          %span.small-box
+            - calculate_profit = p2p.tax_paid? ? p2p.calculate_profit_with_taxes : p2p.calculate_profit
+            %strong{ class: calculate_profit > 0 ? 'text-success' : 'text-danger' }
+              = p2p.calculate_profit > 0 ? "+#{format_number calculate_profit}" : "#{format_number calculate_profit}"
+              = "₽"
+            - if p2p.usdt_remains > 0
+              - calculate_profit_without_remains = p2p.calculate_profit_without_remains
+              %span.text-muted.text-small= "(остаток: #{p2p.usdt_remains} USDT, прибыль без остатка:"
+              - if calculate_profit_without_remains != 0
+                %strong.text-muted.text-small{ class: calculate_profit_without_remains > 0 ? 'text-success' : 'text-danger' }
+                  = calculate_profit_without_remains > 0 ? "+#{format_number calculate_profit_without_remains}" : "#{format_number calculate_profit_without_remains}"
+                  = "₽"
+            - if p2p.comission_rub
+              %span.text-muted.text-small= "(комиссия: #{p2p.comission_rub} ₽)"
+      %span.date.text-muted
+    %span.text-muted
+      .hide-show-card= g_icon('keyboard_arrow_down')
+
+  .p2p-info{ style: show_card_body ? "display: grid;": "display: none;" }
+    .p2p-item
+      %label.text-muted Банк:
+      %span= p2p.bank_id ? tgm("bank_#{p2p.bank_id}") : "—"
+    .p2p-item
+      %label.text-muted Тип:
+      %span= p2p.p2p_type_name
+    .p2p-item
+      %label.text-muted Курс (₽ / $):
+      %span= format_number p2p.rub_per_usd
+    .p2p-item
+      %label.text-muted Кол-во USDT:
+      %span= format_number p2p.usdt_count
+    .p2p-item
+      %label.text-muted Итог. сумма~
+      %span= "#{format_number p2p.total_buy_sum} ₽"
+      - if p2p.comission_rub
+        %span.text-muted.text-small= "(комиссия: #{p2p.comission_rub} ₽)"
+    .p2p-item
+      %label.text-muted Дата:
+      %span= p2p.order_date.present? ? "#{small_datetime(p2p.order_date)}" : "Дата не указана"
+    - if p2p.buy?
+      .p2p-item
+        %label.text-muted Налог:
+        %span{ class: p2p.tax_paid ? "text-success" : "text-danger" }
+          = p2p.tax_paid ? 'Оплачен' : 'Не оплачен'
+          %span.text-muted= "(#{p2p.calculate_tax} ₽)"
+    .p2p-actions
+      
+      = link_to edit_p2p_path(id: p2p.id, p2p: p2p), class: 'btn btn-edit' do
+        = g_icon('edit')
+      - if p2p.buy?
+        = link_to sell_p2p_path(p2p), class: 'btn btn-edit btn-success' do
+          = g_icon('attach_money')
+      = link_to p2p_path(p2p), method: :delete, data: { confirm: 'Удалить сделку?' }, class: 'btn btn-delete' do
+        = g_icon('delete')
