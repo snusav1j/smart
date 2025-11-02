@@ -8,3 +8,38 @@
     flex-direction: column;
   }
 }
+.show-on-mobile{
+  display: none;
+}
+@media screen and (max-width: 767px){
+  .hide-on-mobile{
+    display: none;
+  }
+  
+  .show-on-mobile{
+    display: block;
+  }
+  .show-on-mobile-unset{
+    display: unset;
+  }
+  .p2p-item{
+    width: 100% !important;
+    padding: 5px;
+    background: var(--secondary-color);
+    border-radius: 5px;
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow);
+  }
+  .p2p-info{
+    grid-template-columns: unset !important;
+  }
+  .page-title{
+    font-size: 18px !important;
+  }
+  .page-title span{
+    font-size: 14px !important;
+  }
+  .text-small{
+    font-size: 12px !important;
+  }
+}

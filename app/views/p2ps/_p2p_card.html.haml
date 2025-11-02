@@ -2,10 +2,9 @@
   .p2p-header
     %span
       %span.text-muted.small-box{ style: "font-weight: 700; margin-right: 10px;"  }= "##{p2p.order_id}"
-      
       - if p2p.buy?
         - if p2p.calculate_profit != 0
-          %span.small-box
+          %span.small-box.hide-on-mobile
             - calculate_profit = p2p.tax_paid? ? p2p.calculate_profit_with_taxes : p2p.calculate_profit
             %strong{ class: calculate_profit > 0 ? 'text-success' : 'text-danger' }
               = p2p.calculate_profit > 0 ? "+#{format_number calculate_profit}" : "#{format_number calculate_profit}"
@@ -50,8 +49,26 @@
         %span{ class: p2p.tax_paid ? "text-success" : "text-danger" }
           = p2p.tax_paid ? 'Оплачен' : 'Не оплачен'
           %span.text-muted= "(#{p2p.calculate_tax} ₽)"
+    - if p2p.buy?
+      .p2p-item.show-on-mobile
+        %label.text-muted Прибыль:
+        - if p2p.calculate_profit != 0
+          %span{ style: "width: 100% margin-bottom: 15px;" }
+            - calculate_profit = p2p.tax_paid? ? p2p.calculate_profit_with_taxes : p2p.calculate_profit
+            %strong{ class: calculate_profit > 0 ? 'text-success' : 'text-danger' }
+              = p2p.calculate_profit > 0 ? "+#{format_number calculate_profit}" : "#{format_number calculate_profit}"
+              = "₽"
+            - if p2p.usdt_remains > 0
+              - calculate_profit_without_remains = p2p.calculate_profit_without_remains
+              %span.text-muted.text-small= "(остаток: #{p2p.usdt_remains} USDT, прибыль без остатка:"
+              - if calculate_profit_without_remains != 0
+                %strong.text-muted.text-small{ class: calculate_profit_without_remains > 0 ? 'text-success' : 'text-danger' }
+                  = calculate_profit_without_remains > 0 ? "+#{format_number calculate_profit_without_remains}" : "#{format_number calculate_profit_without_remains}"
+                  = "₽"
+            - if p2p.comission_rub
+              %span.text-muted.text-small= "(комиссия: #{p2p.comission_rub} ₽)"
     .p2p-actions
-      
+
       = link_to edit_p2p_path(id: p2p.id, p2p: p2p), class: 'btn btn-edit' do
         = g_icon('edit')
       - if p2p.buy?

@@ -1,6 +1,6 @@
 .content-block
   .content-header
-    %h1
+    %h1.page-title
       - total_profit = P2p.calculate_total_profit(@p2ps)
       - total_profit_with_taxes = P2p.calculate_total_profit_with_taxes(@p2ps)
       = "Ордера"
@@ -9,11 +9,14 @@
           - if total_profit != 0
             = total_profit > 0 ? "+#{format_number total_profit}" : "#{format_number total_profit}"
             = "₽"
-          %span.text-small.text-muted
-            - if total_profit != 0
+            %span.text-small.text-muted.hide-on-mobile
               = "(с налогом:"
               = total_profit > 0 ? "+#{format_number total_profit_with_taxes}" : "(#{format_number total_profit_with_taxes}"
               = "₽)"
+            -# %span.text-small.text-muted.show-on-mobile-unset
+            -#   = "С НДС"
+            -#   = total_profit > 0 ? "+#{format_number total_profit_with_taxes}" : "(#{format_number total_profit_with_taxes}"
+            -#   = "₽"
     = link_to new_p2p_path, class: 'btn' do
       = g_icon('add')
   .content-body
