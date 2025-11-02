@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   resources :home do
     collection do
+      
     end
   end
 
