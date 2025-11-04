@@ -71,6 +71,8 @@
 
       = link_to edit_p2p_path(id: p2p.id, p2p: p2p), class: 'btn btn-edit' do
         = g_icon('edit')
+      = link_to p2p_path(p2p), class: 'btn btn-edit btn-primary' do
+        = g_icon('visibility')
       - if p2p.buy?
         = link_to sell_p2p_path(p2p), class: 'btn btn-edit btn-success' do
           = g_icon('attach_money')

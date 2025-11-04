@@ -1,9 +1,8 @@
 .content-block
   .content-header.page-title
     %h1 Добавить
-    = tgm(:hello)
   .content-body
-    = form_with model: @p2p, local: true, html: { class: 'form-box' } do |f|
+    = form_with model: @p2p, local: true, html: { class: 'form-box', multipart: true } do |f|
       .form-group
         = f.label :p2p_type, 'Тип сделки'
         = f.select :p2p_type, options_for_select([['Покупка', 0], ['Продажа', 1]], 0), {}, class: 'form-input', required: true
@@ -31,6 +30,19 @@
       .form-group
         = f.label :bank_id, 'Банк'
         = f.select :bank_id, options_for_select(Bank::BANKS.map { |c| [tgm("bank_#{c}"), c] }), {}, prompt: 'Выберите банк', class: 'form-input', required: true
+      .form-group.box
+        %label
+          Файлы
+          %a#add-file-link{ href: '#', style: 'margin-left: 10px; font-size: 0.9em;' }
+            = g_icon("add")
+
+        #files-container
+          - @p2p.p2p_files.each_with_index do |ff, i|
+            .file-upload
+              = text_field_tag "p2p_files[#{i}][file_name]", ff.file_name, class: 'form-input', placeholder: 'Название файла'
+              = file_field_tag "p2p_files[#{i}][file]", class: 'form-input'
+
+
       .form-actions
         = link_to 'Отмена', p2ps_path, class: 'btn'
         = f.submit 'Сохранить', class: 'btn'

@@ -1,1 +1,105 @@
-show
+.content-block.p2p-show
+  .content-header
+    %h1.page-title
+      = "Сделка ##{@p2p.order_id || @p2p.id}"
+      - if @p2p.buy?
+        - profit = @p2p.tax_paid? ? @p2p.calculate_profit_with_taxes : @p2p.calculate_profit
+        %span.profit-label{ class: profit > 0 ? 'text-success' : 'text-danger' }
+          = profit > 0 ? "+#{format_number profit}" : "#{format_number profit}"
+          = " ₽"
+      %span.date.text-muted= small_datetime(@p2p.order_date)
+
+  .content-body.grid-layout
+    / === Левая часть: данные по сделке ===
+    .deal-info
+      .info-section
+        %h2 Информация
+        %dl.data-list
+          %dt Тип
+          %dd= @p2p.p2p_type_name
+
+          %dt Курс
+          %dd= "#{format_number @p2p.rub_per_usd} ₽ / $"
+
+          %dt Сумма заказа
+          %dd= "#{format_number @p2p.order_sum} ₽"
+
+          %dt Кол-во USDT
+          %dd= format_number @p2p.usdt_count
+
+          %dt Банк
+          %dd= @p2p.bank_id ? tgm("bank_#{@p2p.bank_id}") : "—"
+
+          %dt Налог
+          %dd
+            - if @p2p.buy?
+              %span{ class: @p2p.tax_paid ? 'text-success' : 'text-danger' }
+                = @p2p.tax_paid ? "Оплачен (#{format_number @p2p.calculate_tax} ₽)" : "Не оплачен (#{format_number @p2p.calculate_tax} ₽)"
+            - else
+              = "—"
+
+          %dt Комиссия
+          %dd= @p2p.comission_rub ? "#{format_number @p2p.comission_rub} ₽" : "—"
+
+          %dt Остаток USDT
+          %dd= @p2p.usdt_remains.positive? ? "#{format_number @p2p.usdt_remains} USDT" : "—"
+
+      .info-section
+        %h2 Прибыль
+        - profit = @p2p.tax_paid? ? @p2p.calculate_profit_with_taxes : @p2p.calculate_profit
+        - profit_without_remains = @p2p.calculate_profit_without_remains
+        %div
+          %p
+            Основная прибыль:
+            %strong{ class: profit > 0 ? 'text-success' : 'text-danger' }
+              = profit > 0 ? "+#{format_number profit}" : "#{format_number profit}"
+              ₽
+          - if @p2p.usdt_remains > 0
+            %p.text-muted
+              Без остатка:
+              %strong{ class: profit_without_remains > 0 ? 'text-success' : 'text-danger' }
+                = profit_without_remains > 0 ? "+#{format_number profit_without_remains}" : "#{format_number profit_without_remains}"
+                ₽
+
+      .info-section.actions
+        %h2 Действия
+        .action-buttons
+          = link_to edit_p2p_path(@p2p), class: 'btn btn-edit' do
+            = g_icon('edit')
+            Изменить
+          - if @p2p.buy?
+            = link_to sell_p2p_path(@p2p), class: 'btn btn-success' do
+              = g_icon('attach_money')
+              Продать
+          = link_to p2p_path(@p2p), method: :delete, data: { confirm: 'Удалить сделку?' }, class: 'btn btn-delete' do
+            = g_icon('delete')
+            Удалить
+
+    / === Правая часть: работа с файлами ===
+    .files-panel
+      .files-header
+        %h2 
+          Файлы
+          %span.text-muted.text-small= "(#{@p2p.p2p_files.count})"
+      .files-body
+        - if @p2p.p2p_files.any?
+          %ul.file-list
+            - @p2p.p2p_files.each do |file|
+              %li.file-item
+                %span.name= file.file_name
+                = link_to 'Удалить', file_destroy_p2p_path(p2p: @p2p, file_id: file), method: :delete, remote: true, data: { confirm: 'Удалить файл?' }, class: 'delete-link'
+        - else
+          %p.text-muted Нет файлов
+
+        = form_with model: @p2p, local: true, html: { class: 'form-box', multipart: true } do |f|
+          = f.hidden_field :id, class: 'form-input', required: false
+          .form-group
+            %label
+              %a#add-file-link{ href: '#', style: 'margin-left: 10px; font-size: 0.9em;' } Добавить файл
+
+            #files-container
+              .file-upload
+                = text_field_tag "p2p_files[new][file_name]", nil, { class: 'form-input', placeholder: 'Название файла' }
+                = file_field_tag "p2p_files[new][file]", { class: 'form-input' }
+          .form-actions
+            = f.submit 'Загрузить', class: 'btn'

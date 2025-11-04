@@ -10,13 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_02_160320) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_04_172506) do
   create_table "p2p_files", force: :cascade do |t|
     t.integer "p2p_id", null: false
     t.string "file_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "stored_path"
     t.index ["p2p_id"], name: "index_p2p_files_on_p2p_id"
+    t.index ["user_id"], name: "index_p2p_files_on_user_id"
   end
 
   create_table "p2ps", force: :cascade do |t|

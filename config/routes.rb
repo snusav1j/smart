@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
     end
   end
-
+  
   resources :p2ps do
     collection do
       post :sell_order
@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     
     member do
       get :sell
+      delete 'file_destroy/:file_id', to: 'p2ps#file_destroy', as: 'file_destroy'
       
     end
   end

@@ -1,5 +1,6 @@
 class P2p < ApplicationRecord
   has_many :p2p_files, dependent: :destroy
+  accepts_nested_attributes_for :p2p_files, allow_destroy: true
 
   BUY_TYPE = 0
   SELL_TYPE = 1
